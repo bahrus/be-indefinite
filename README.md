@@ -54,9 +54,9 @@ produces:
 </a>
 ```
 
-...with the values passed in from the host:  host.type, host.options[5].icon, etc.  The template tap provides a gateway for passing in new values (optional)
+...with the values passed in from the host:  host.type, host.options[5].icon, etc.  The template tag provides a gateway for passing in new values (optional)
 
-Cross pollinate syntax ith obf-ml.
+Cross pollinate syntax ith obj-ml.
 
 Ends with -e means expression from host (by default)
 
