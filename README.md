@@ -44,7 +44,7 @@ During template instantiation, and only during instantiation (or after an XSLT T
 <menu-option index-n=5 type-e="type" icon-e="options@index.icon" be-inquiring></menu-option >
 ```
 
-produces:
+gets replaced with:
 
 ```html
 <template data-cnt=2></template>
