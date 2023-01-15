@@ -1,14 +1,13 @@
 # be-indefinite
 
 ```html
-<template be-gone id=menu-option be-gone be-indefinite='{
+<template be-gone id=menu-option be-indefinite='{
     "from": ["type", "open", "index"],
     "derive": ["hyperlinkCss","transitionDelay", "closed", "labelCss"],
     "transform": {
         "aE": {
             "href": "url",
             "className": "hyperlinkCss",
-            "disabled": "closed",
             ".style.transitionDelay": "transitionDelay",
         },
         "iE":{
@@ -42,18 +41,22 @@ What this does:  puts the template into a weak map associated with the root node
 During template instantiation, and only during instantiation (or after an XSLT Transformation, before adding to the live DOM tree):
 
 ```html
-<menu-option index=5 type="{type}" icon="{options|index.icon}" be-inquiring></menu-option >
+<menu-option index-n=5 type-e="type" icon-e="options@index.icon" be-inquiring></menu-option >
 ```
 
 produces:
 
 ```html
 <template data-cnt=2></template>
-<a target="_blank">
-    <i></i>
-    <h3></h3>
+<a href=... class=... style="transition-delay:..." target="_blank">
+    <i class=...></i>
+    <h3 class=...>...</h3>
 </a>
 ```
 
-with the values passed in from the host:  host.type, host.options[5].icon, etc.  The template tap provides a gateway for passing in new values (optional)
+...with the values passed in from the host:  host.type, host.options[5].icon, etc.  The template tap provides a gateway for passing in new values (optional)
+
+Cross pollinate syntax ith obf-ml.
+
+Ends with -e means expression from host (by default)
 
