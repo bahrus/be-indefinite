@@ -23,7 +23,7 @@
         <i></i>
         <h3></h3>
     </a>
-    <script nomodule be-gone>
+    <script nomodule>
         ({type, open, index}) => ({
             hyperlinkCss: `menu-${type}-option`,
             transitionDelay: `${(open ? 200 : 0) + 50*index}ms`,
