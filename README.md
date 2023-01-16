@@ -8,7 +8,7 @@
 
 *be-definitive* provides a way to declaratively define full fledged custom element, complete with support for shadow DOM, constructible stylesheets, form association, etc.  It is meant for scenarios where that custom element can be used in multiple scenarios, across multiple frameworks, server-side or client-side, etc, with a long-term commitment to longevity a significantly desired outcome.
 
-*be-indefinite*, has more of a [Polly-annish](https://en.wikipedia.org/wiki/Along_Came_Polly) approach to life.  It is meant to be used in a setting where it is only used within an uber web component, and nowhere else, and is still highly in flux.  As such, opportunities for short-cuts are pursued as far as defining the "component", requiring less tender-loving-care to produce.  
+*be-indefinite*, in contrast, has more of a [Polly-annish](https://en.wikipedia.org/wiki/Along_Came_Polly) approach to life.  It is meant to be used in a setting where it is only used within an uber web component, and nowhere else, and is still highly in flux.  As such, opportunities for short-cuts are pursued as far as defining the "component", requiring less tender-loving-care to produce.  
 
 ## Syntax (semantics?)
 
