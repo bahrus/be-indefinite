@@ -20,15 +20,15 @@
         "aE": {
             "href": "url",
             "className": "hyperlinkCss",
-            ".style.transitionDelay": "transitionDelay",
+            ".style.transitionDelay": "transitionDelay"
         },
         "iE":{
             "className": "icon"
         },
         "h3E": {
             "textContent": "label",
-            "className": "labelCss",
-        },
+            "className": "labelCss"
+        }
     }
 }'>
     <a target="_blank">
@@ -70,7 +70,7 @@ gets replaced with:
 
 ...with the values passed in from the host:  host.type, host.options[5].icon, etc.  The template tag provides a gateway for passing in new values (optional)
 
-Cross pollinate syntax ith obj-ml.
+Cross pollinate syntax with obj-ml.
 
-Ends with -e means expression from host (by default)
+Ends with -e means "expression from host" (by default)
 
