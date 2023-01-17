@@ -17,15 +17,15 @@
     "from": ["type", "open", "index"],
     "derive": ["hyperlinkCss","transitionDelay", "closed", "labelCss"],
     "transform": {
-        "aE": {
+        "a": {
             "href": "url",
             "className": "hyperlinkCss",
             ".style.transitionDelay": "transitionDelay"
         },
-        "iE":{
+        "i":{
             "className": "icon"
         },
-        "h3E": {
+        "h3": {
             "textContent": "label",
             "className": "labelCss"
         }
@@ -46,6 +46,22 @@
 </template>
 ```
 
+(might be able to infer the derived props from the first eval? or from the transform)
+
+Shorthand for:
+
+```html
+<script nomodule>
+    export const via = ({type, open, index}) => ({
+        hyperlinkCss: `menu-${type}-option`,
+        transitionDelay: `${(open ? 200 : 0) + 50*index}ms`,
+        closed: !open,
+        labelCss: type === 'quick' ? 'tooltip' : 'label'
+    })
+</script>
+```
+
+
 Like its antonymous counterpart, *be-definitive*, *be-indefinite* eagerly awaits [inline-binding template instantiation](https://github.com/rniwa/webcomponents/blob/add-dom-parts-proposal/proposals/DOM-Parts.md) syntax being incorporated into the browser, at which point the syntax above can continue to supplement what the built-in binding supports.  For now, only "binding from a distance" is supported.
 
 What this does:  puts the template into a weak map associated with the root node host.
@@ -55,7 +71,7 @@ What this does:  puts the template into a weak map associated with the root node
 During template instantiation, and only during instantiation (or after an XSLT Transformation, before adding to the live DOM tree):
 
 ```html
-<menu-option index-n=5 type-e="type" icon-e="options@index.icon" be-inquiring></menu-option >
+<menu-option index-n=5 type-e="type" icon-e="options@index.icon" be-inquiring></menu-option>
 ```
 
 gets replaced with:
