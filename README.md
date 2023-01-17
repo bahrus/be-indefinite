@@ -77,7 +77,7 @@ During template instantiation, and only during instantiation (or after an XSLT T
 gets replaced with:
 
 ```html
-<template data-cnt=2></template>
+<template data-cnt=2 data-spawn-of=menu-option></template>
 <a href=... class=... style="transition-delay:..." target="_blank">
     <i class=...></i>
     <h3 class=...>...</h3>
