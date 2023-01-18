@@ -1,10 +1,37 @@
 {
   "name": "be-indefinite",
   "version": "0.0.0",
-  "description": "```html\r <template be-gone id=menu-option be-indefinite='{\r     \"from\": [\"type\", \"open\", \"index\"],\r     \"derive\": [\"hyperlinkCss\",\"transitionDelay\", \"closed\", \"labelCss\"],\r     \"transform\": {\r         \"aE\": {\r             \"href\": \"url\",\r             \"className\": \"hyperlinkCss\",\r             \".style.transitionDelay\": \"transitionDelay\",\r         },\r         \"iE\":{\r             \"className\": \"icon\"\r         },\r         \"h3E\": {\r             \"textContent\": \"label\",\r             \"className\": \"labelCss\",\r         },\r     }\r }'>\r     <a target=\"_blank\">\r         <i></i>\r         <h3></h3>\r     </a>\r     <script nomodule be-gone>\r         ({type, open, index}) => ({\r             hyperlinkCss: `menu-${type}-option`,\r             transitionDelay: `${(open ? 200 : 0) + 50*index}ms`,\r             closed: !open,\r             labelCss: type === 'quick' ? 'tooltip' : 'label'\r         })\r     </script>\r </template>\r ```",
-  "main": "index.js",
+  "description": "Provides the ability to create a local webbie compotnik",
+  "keywords": [
+    "web-components",
+    "web-component",
+    "custom-element",
+    "custom-elements"
+  ],
+  "main": "be-indefinite.js",
+  "module": "be-indefinite.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "serve": "node node_modules/may-it-serve/serve.js",
+    "test": "playwright test",
+    "package-check": "package-check"
+  },
+  "files": [
+    "*.*"
+  ],
+  "exports": {
+    ".": "./be-indefinite.js",
+    "./be-indefinite.js": "./be-indefinite.js"
+  },
+  "types": "types.d.ts",
+  "dependencies": {
+    "be-decorated": "0.0.222",
+    "be-hive": "0.0.79",
+    "be-exportable": "0.0.62"
+  },
+  "devDependencies": {
+    "may-it-serve": "0.0.4",
+    "@playwright/test": "1.29.2",
+    "@skypack/package-check": "0.2.2"
   },
   "repository": {
     "type": "git",

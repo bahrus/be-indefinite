@@ -10,12 +10,12 @@
 
 *be-indefinite*, in contrast, has more of a [Polly-annish](https://en.wikipedia.org/wiki/Along_Came_Polly) approach to life.  It is meant to be used in a setting where it is only used within an uber web component, and nowhere else, and is still highly in flux.  As such, opportunities for short-cuts are pursued as far as defining the "component", requiring less tender-loving-care to produce.  
 
-## Syntax (semantics?)
+## Lingo
 
 ```html
 <template id=menu-option be-indefinite='{
-    "from": ["type", "open", "index"],
-    "derive": ["hyperlinkCss","transitionDelay", "closed", "labelCss"],
+    //"from": ["type", "open", "index"],
+    //"derive": ["hyperlinkCss","transitionDelay", "closed", "labelCss"],
     "transform": {
         "a": {
             "href": "url",
