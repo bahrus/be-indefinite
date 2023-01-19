@@ -1,36 +1,42 @@
 import {BeDecoratedProps, MinimalProxy, EventConfigs} from 'be-decorated/types';
+import {ExportableScript} from 'be-exportable/types';
 
-
-export interface EndUserProps{
-    transform: any,
-    prep: any;
-    target: Element;
-    prependTo: any;
-    host: any;
+export interface Meta {
+    exportableScript: ExportableScript;
 }
 
-export interface VirtualProps extends EndUserProps, MinimalProxy{
+export interface EndUserProps{
+    transform?: any,
+    hostPrep?: any;
+    target?: Element;
+    targetSelector?: string;
+    host?: any;
+    meta?: Meta;
+}
+
+export interface VirtualProps extends EndUserProps, MinimalProxy<HTMLTemplateElement>{
     clonedTemplate: any;
     ref: any;
     prepResolved: boolean;
     isC: boolean;
 }
 
-export type Proxy = Element & VirtualProps;
+export type Proxy = HTMLTemplateElement & VirtualProps;
 
-export interface ProxyProps extends VirtualProps{
+export interface PP extends VirtualProps{
     proxy: Proxy;
 }
 
-export type PP = ProxyProps;
+export type ProxyProps = PP;
 
 export type PPP = Partial<PP>;
 
 export type PPE = [PPP, EventConfigs<PPP, Actions>];
 
 export interface Actions{
-    checkForScript(pp: PP): PPP;
+    checkForScript(pp: PP, mold: PPP): PPP | PPE;
     loadScript(pp: PP): PPP;
+    resolveHostProp(pp: PP): PPP;
     cloneTemplate(pp: PP): Promise<PP>;
     instantiate(pp: PP): Promise<PPP>;
     alter(pp: PP): void;

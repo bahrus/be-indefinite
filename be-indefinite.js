@@ -1,10 +1,21 @@
 import { define } from 'be-decorated/DE.js';
 import { register } from 'be-hive/register.js';
 export class BeIndefinite extends EventTarget {
+    checkForScript(pp) {
+        const { self } = pp;
+        const script = self.content.querySelector('script');
+        if (script === null) {
+            return {
+                prepResolved: true,
+            };
+        }
+    }
+    loadScript(pp) {
+    }
 }
 const tagName = 'be-indefinite';
 const ifWantsToBe = 'indefinite';
-const upgrade = '*';
+const upgrade = 'template';
 define({
     config: {
         tagName,
@@ -12,7 +23,7 @@ define({
             ifWantsToBe,
             upgrade,
             virtualProps: [
-                'transform', 'prep', 'target', 'prependTo', 'host',
+                'transform', 'hostPrep', 'target', 'host',
                 'isC', 'clonedTemplate', 'ref', 'prepResolved'
             ]
         },
