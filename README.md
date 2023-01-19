@@ -90,3 +90,5 @@ Cross pollinate syntax with obj-ml.
 
 Ends with -e means "expression from host" (by default)
 
+Synergies with be-inclusive (birtualize)
+

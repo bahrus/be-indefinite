@@ -15,10 +15,26 @@ define<Proxy & BeDecoratedProps<Proxy, Actions>, Actions>({
         tagName,
         propDefaults:{
             ifWantsToBe,
-            upgrade
+            upgrade,
+            virtualProps: [
+                'transform', 'prep', 'target', 'prependTo', 'host',
+                'isC', 'clonedTemplate', 'ref', 'prepResolved'
+            ]
         },
         actions:{
-
+            checkForScript: 'isC',
+            cloneTemplate: {
+                ifAllOf: ['host', 'prepResolved', 'transform'],
+                ifNoneOf: ['ref']
+            },
+            instantiate: {
+                ifAllOf: ['clonedTemplate', 'target'],
+                ifNoneOf: ['ref']
+            },
+            alter: {
+                ifAllOf: ['ref'],
+                ifKeyIn: ['host']
+            }
         }
     },
     complexPropDefaults: {
