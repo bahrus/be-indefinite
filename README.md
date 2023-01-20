@@ -14,7 +14,7 @@
 
 ```html
 <template id=menu-option be-indefinite='{
-    //"from": ["type", "open", "index"],
+    "observe": ["type", "open", "index"],
     //"derive": ["hyperlinkCss","transitionDelay", "closed", "labelCss"],
     "transform": {
         "a": {

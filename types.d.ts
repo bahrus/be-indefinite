@@ -12,6 +12,7 @@ export interface EndUserProps{
     targetSelector?: string;
     host?: EventTarget; // trans-render/lib/PropertyBag
     meta?: Meta;
+    observe?: string[];
 }
 
 export interface VirtualProps extends EndUserProps, MinimalProxy<HTMLTemplateElement>{

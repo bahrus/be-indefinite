@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <template id=menu-option be-indefinite='{
+        "observe": ["type", "open", "index"],
+        //"derive": ["hyperlinkCss","transitionDelay", "closed", "labelCss"],
+        "transform": {
+            "a": {
+                "href": "url",
+                "className": "hyperlinkCss",
+                ".style.transitionDelay": "transitionDelay"
+            },
+            "i":{
+                "className": "icon"
+            },
+            "h3": {
+                "textContent": "label",
+                "className": "labelCss"
+            }
+        }
+    }'>
+        <a target="_blank">
+            <i></i>
+            <h3></h3>
+        </a>
+        <script>
+            ({type, open, index}) => ({
+                hyperlinkCss: `menu-${type}-option`,
+                transitionDelay: `${(open ? 200 : 0) + 50*index}ms`,
+                closed: !open,
+                labelCss: type === 'quick' ? 'tooltip' : 'label'
+            })
+        </script>
+    </template>
+</body>
+</html>

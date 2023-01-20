@@ -58,15 +58,19 @@ export class BeIndefinite extends EventTarget implements Actions{
 
     //#transformer: Transformer | undefined;
     async cloneTemplate(pp: PP): Promise<PP> {
-        const {host, hostPrep, transform, self, target} = pp;
+        const {host, hostPrep, transform, self, target, observe} = pp;
         //const {Tx} = await import('trans-render/lib/Tx.js');
         const {DTR} = await import('trans-render/lib/DTR.js');
+        const {getAdjacentChildren} = await import('trans-render/lib/getAdjacentChildren.js');
         const ctx: RenderContext = {
             host,
             transform,
         };
         const transformer = new DTR(ctx);
         const clone = self.content.cloneNode(true) as DocumentFragment;
+        if(hostPrep !== undefined){
+            hostPrep(host);
+        }
         await transformer.transform(clone);
         const cnt = clone.childNodes.length;
         if(target!.nextElementSibling === null && target!.parentElement !== null){
@@ -76,13 +80,20 @@ export class BeIndefinite extends EventTarget implements Actions{
             insertAdjacentClone(clone, target!, 'afterend');
         }
         const refTempl = document.createElement('template');
-        //this.#transformer.transform(self);
+        refTempl.dataset.cnt = cnt + '';
+        
         host!.addEventListener('prop-changed', e => {
-
+            const prop = (e as CustomEvent).detail.prop;
+            if(observe!.includes(prop)){
+                hostPrep(host);
+                ctx.host = host;
+                const children = getAdjacentChildren(refTempl);
+                transformer.transform(children);
+            }
+            
+            
         });
-        if(hostPrep !== undefined){
-            hostPrep(host);
-        }
+
 
     }
 }
@@ -99,7 +110,7 @@ define<Proxy & BeDecoratedProps<Proxy, Actions>, Actions>({
             upgrade,
             virtualProps: [
                 'transform', 'hostPrep', 'target',  'host', 'meta',
-                'isC', 'clonedTemplate', 'ref', 'prepResolved'
+                'isC', 'clonedTemplate', 'ref', 'prepResolved', 'observe'
             ]
         },
         actions:{
