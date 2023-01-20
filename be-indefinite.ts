@@ -2,7 +2,7 @@ import {define, BeDecoratedProps} from 'be-decorated/DE.js';
 import {Proxy, PP, Actions, VirtualProps, PPP, PPE} from './types';
 import {register} from 'be-hive/register.js';
 import { ExportableScript } from 'be-exportable/types';
-import { Attachable } from 'trans-render/lib/types';
+import { Attachable, Transformer, RenderContext } from 'trans-render/lib/types';
 
 export class BeIndefinite extends EventTarget implements Actions{
     async checkForScript(pp: PP, mold: PPP): Promise<PPP | PPE> {
@@ -14,7 +14,7 @@ export class BeIndefinite extends EventTarget implements Actions{
                 return this.resolveHostProp(pp);
             }else{
                 return [{}, {
-                    resolveHostProp: {on: 'load', of: self}
+                    resolveHostProp: {on: 'load', of: exportableScript}
                 }] as PPE;
             }
 
@@ -38,16 +38,50 @@ export class BeIndefinite extends EventTarget implements Actions{
         } as PPP;
     }
 
-    async loadScript(pp: PP, script: ExportableScript): PPE {
+    async loadScript(pp: PP, script: ExportableScript) {
         const be = 'be-exportable';
         if(customElements.get(be) === undefined){
             import('be-exportable/be-exportable.js');
             await customElements.whenDefined(be);
             const decorator = document.createElement(be) as any as Attachable;
-            decorator.attach(script);            
+            await decorator.attach(script);   
+            script.remove();         
         }else{
             const decorator = document.createElement(be) as any as Attachable;
-            decorator.attach(script);
+            await decorator.attach(script);
+            script.remove();
+        }
+        return [{}, {
+            resolveHostProp: {on: 'load', of: script}
+        }] as PPE;
+    }
+
+    //#transformer: Transformer | undefined;
+    async cloneTemplate(pp: PP): Promise<PP> {
+        const {host, hostPrep, transform, self, target} = pp;
+        //const {Tx} = await import('trans-render/lib/Tx.js');
+        const {DTR} = await import('trans-render/lib/DTR.js');
+        const ctx: RenderContext = {
+            host,
+            transform,
+        };
+        const transformer = new DTR(ctx);
+        const clone = self.content.cloneNode(true) as DocumentFragment;
+        await transformer.transform(clone);
+        const cnt = clone.childNodes.length;
+        if(target!.nextElementSibling === null && target!.parentElement !== null){
+            target!.parentElement.appendChild(clone);
+        }else{
+            const {insertAdjacentClone} = await import('trans-render/lib/insertAdjacentClone.js');
+            insertAdjacentClone(clone, target!, 'afterend');
+        }
+        const refTempl = document.createElement('template');
+        //this.#transformer.transform(self);
+        host!.addEventListener('prop-changed', e => {
+
+        });
+        if(hostPrep !== undefined){
+            hostPrep(host);
         }
 
     }

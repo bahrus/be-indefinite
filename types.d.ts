@@ -10,7 +10,7 @@ export interface EndUserProps{
     hostPrep?: any;
     target?: Element;
     targetSelector?: string;
-    host?: any;
+    host?: EventTarget; // trans-render/lib/PropertyBag
     meta?: Meta;
 }
 
@@ -34,8 +34,8 @@ export type PPP = Partial<PP>;
 export type PPE = [PPP, EventConfigs<PPP, Actions>];
 
 export interface Actions{
-    checkForScript(pp: PP, mold: PPP): PPP | PPE;
-    loadScript(pp: PP): PPP;
+    checkForScript(pp: PP, mold: PPP): Promise<PPP | PPE>;
+    loadScript(pp: PP, script: ExportableScript): Promise<PPE>;
     resolveHostProp(pp: PP): PPP;
     cloneTemplate(pp: PP): Promise<PP>;
     instantiate(pp: PP): Promise<PPP>;
