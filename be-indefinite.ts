@@ -23,8 +23,9 @@ export class BeIndefinite extends EventTarget implements Actions{
         if(script === null){
             return mold;
         }
-        meta!.exportableScript = script;
-        return await this.loadScript(pp, script);
+        const clonedScript = meta!.exportableScript = script.cloneNode(true) as ExportableScript;
+        script.remove();
+        return await this.loadScript(pp, clonedScript);
         
     }
 
@@ -49,7 +50,6 @@ export class BeIndefinite extends EventTarget implements Actions{
         }else{
             const decorator = document.createElement(be) as any as Attachable;
             await decorator.attach(script);
-            script.remove();
         }
         return [{}, {
             resolveHostProp: {on: 'load', of: script}
@@ -57,7 +57,7 @@ export class BeIndefinite extends EventTarget implements Actions{
     }
 
     //#transformer: Transformer | undefined;
-    async cloneTemplate(pp: PP): Promise<PP> {
+    async cloneTemplate(pp: PP){
         const {host, hostPrep, transform, self, target, observe} = pp;
         //const {Tx} = await import('trans-render/lib/Tx.js');
         const {DTR} = await import('trans-render/lib/DTR.js');
@@ -107,11 +107,15 @@ define<Proxy & BeDecoratedProps<Proxy, Actions>, Actions>({
         tagName,
         propDefaults:{
             ifWantsToBe,
+            forceVisible: [upgrade],
             upgrade,
             virtualProps: [
                 'transform', 'hostPrep', 'target',  'host', 'meta',
                 'isC', 'clonedTemplate', 'ref', 'prepResolved', 'observe'
-            ]
+            ],
+            proxyPropDefaults: {
+                isC: true
+            }
         },
         actions:{
             checkForScript: {

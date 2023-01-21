@@ -38,9 +38,9 @@ export interface Actions{
     checkForScript(pp: PP, mold: PPP): Promise<PPP | PPE>;
     loadScript(pp: PP, script: ExportableScript): Promise<PPE>;
     resolveHostProp(pp: PP): PPP;
-    cloneTemplate(pp: PP): Promise<PP>;
-    instantiate(pp: PP): Promise<PPP>;
-    alter(pp: PP): void;
+    cloneTemplate(pp: PP): void;//Promise<PP>;
+    //instantiate(pp: PP): Promise<PPP>;
+    //alter(pp: PP): void;
     
 }
 

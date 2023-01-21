@@ -9,7 +9,6 @@
 <body>
     <template id=menu-option be-indefinite='{
         "observe": ["type", "open", "index"],
-        //"derive": ["hyperlinkCss","transitionDelay", "closed", "labelCss"],
         "transform": {
             "a": {
                 "href": "url",
@@ -30,13 +29,50 @@
             <h3></h3>
         </a>
         <script>
-            ({type, open, index}) => ({
+            export const hostProp = ({type, open, index}) => ({
                 hyperlinkCss: `menu-${type}-option`,
                 transitionDelay: `${(open ? 200 : 0) + 50*index}ms`,
                 closed: !open,
                 labelCss: type === 'quick' ? 'tooltip' : 'label'
-            })
+            });
         </script>
     </template>
+
+    <div id=target></div>
+
+    <script type=importmap>
+        {
+            "imports": {
+                "xtal-element/": "../node_modules/xtal-element/",
+                "trans-render/": "../node_modules/trans-render/",
+                "be-decorated/": "../node_modules/be-decorated/",
+                "be-exportable/": "../node_modules/be-exportable/",
+                "be-hive/": "../node_modules/be-hive/"
+            }
+        }
+    </script>
+    <script type=module>
+        import '../be-indefinite.js';
+        import {PropertyBag} from 'trans-render/lib/PropertyBag.js';
+        const host = new PropertyBag();
+        const menuOption = document.querySelector('#menu-option');
+        let beD = menuOption.beDecorated;
+        if(beD === undefined){
+            beD = {};
+            menuOption.beDecorated = beD;
+        }
+        let indef = beD.indefinite;
+        if(indef === undefined){
+            beD.indefinite = {};
+        }
+        const {indefinite} = beD;
+        Object.assign(indefinite, {
+            meta: {},
+            target,
+            host,
+            //observe: ['type', 'open', 'index']
+        });
+        
+    </script>
 </body>
 </html>

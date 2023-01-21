@@ -1,16 +1,89 @@
 import { define } from 'be-decorated/DE.js';
 import { register } from 'be-hive/register.js';
 export class BeIndefinite extends EventTarget {
-    checkForScript(pp) {
-        const { self } = pp;
+    async checkForScript(pp, mold) {
+        const { self, meta, proxy } = pp;
+        const { exportableScript } = meta;
+        if (exportableScript !== undefined) {
+            const { _modExport } = exportableScript;
+            if (_modExport) {
+                return this.resolveHostProp(pp);
+            }
+            else {
+                return [{}, {
+                        resolveHostProp: { on: 'load', of: exportableScript }
+                    }];
+            }
+        }
         const script = self.content.querySelector('script');
         if (script === null) {
-            return {
-                prepResolved: true,
-            };
+            return mold;
         }
+        const clonedScript = meta.exportableScript = script.cloneNode(true);
+        script.remove();
+        return await this.loadScript(pp, clonedScript);
     }
-    loadScript(pp) {
+    resolveHostProp(pp) {
+        const { meta, proxy } = pp;
+        const { exportableScript } = meta;
+        const { _modExport } = exportableScript;
+        proxy.hostPrep = _modExport.hostPrep;
+        return {
+            prepResolved: true
+        };
+    }
+    async loadScript(pp, script) {
+        const be = 'be-exportable';
+        if (customElements.get(be) === undefined) {
+            import('be-exportable/be-exportable.js');
+            await customElements.whenDefined(be);
+            const decorator = document.createElement(be);
+            await decorator.attach(script);
+            script.remove();
+        }
+        else {
+            const decorator = document.createElement(be);
+            await decorator.attach(script);
+        }
+        return [{}, {
+                resolveHostProp: { on: 'load', of: script }
+            }];
+    }
+    //#transformer: Transformer | undefined;
+    async cloneTemplate(pp) {
+        const { host, hostPrep, transform, self, target, observe } = pp;
+        //const {Tx} = await import('trans-render/lib/Tx.js');
+        const { DTR } = await import('trans-render/lib/DTR.js');
+        const { getAdjacentChildren } = await import('trans-render/lib/getAdjacentChildren.js');
+        const ctx = {
+            host,
+            transform,
+        };
+        const transformer = new DTR(ctx);
+        const clone = self.content.cloneNode(true);
+        if (hostPrep !== undefined) {
+            hostPrep(host);
+        }
+        await transformer.transform(clone);
+        const cnt = clone.childNodes.length;
+        if (target.nextElementSibling === null && target.parentElement !== null) {
+            target.parentElement.appendChild(clone);
+        }
+        else {
+            const { insertAdjacentClone } = await import('trans-render/lib/insertAdjacentClone.js');
+            insertAdjacentClone(clone, target, 'afterend');
+        }
+        const refTempl = document.createElement('template');
+        refTempl.dataset.cnt = cnt + '';
+        host.addEventListener('prop-changed', e => {
+            const prop = e.detail.prop;
+            if (observe.includes(prop)) {
+                hostPrep(host);
+                ctx.host = host;
+                const children = getAdjacentChildren(refTempl);
+                transformer.transform(children);
+            }
+        });
     }
 }
 const tagName = 'be-indefinite';
@@ -21,14 +94,23 @@ define({
         tagName,
         propDefaults: {
             ifWantsToBe,
+            forceVisible: [upgrade],
             upgrade,
             virtualProps: [
-                'transform', 'hostPrep', 'target', 'host',
-                'isC', 'clonedTemplate', 'ref', 'prepResolved'
-            ]
+                'transform', 'hostPrep', 'target', 'host', 'meta',
+                'isC', 'clonedTemplate', 'ref', 'prepResolved', 'observe'
+            ],
+            proxyPropDefaults: {
+                isC: true
+            }
         },
         actions: {
-            checkForScript: 'isC',
+            checkForScript: {
+                ifAllOf: ['isC', 'meta'],
+                returnObjMold: {
+                    prepResolved: true
+                }
+            },
             cloneTemplate: {
                 ifAllOf: ['host', 'prepResolved', 'transform'],
                 ifNoneOf: ['ref']
