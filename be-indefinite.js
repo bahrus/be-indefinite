@@ -111,14 +111,6 @@ define({
                 ifAllOf: ['host', 'prepResolved', 'transform'],
                 ifNoneOf: ['ref']
             },
-            // instantiate: {
-            //     ifAllOf: ['clonedTemplate', 'target'],
-            //     ifNoneOf: ['ref']
-            // },
-            // alter: {
-            //     ifAllOf: ['ref'],
-            //     ifKeyIn: ['host']
-            // }
         }
     },
     complexPropDefaults: {

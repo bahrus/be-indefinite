@@ -12,25 +12,15 @@ export interface Meta {
 }
 
 export interface EndUserProps{
-    //transform?: any,
-    //islet?: any;
-    //target?: Element;
-    //host?: EventTarget; // trans-render/lib/PropertyBag
     meta?: Meta;
-    //observe?: string[];
 }
 
 export interface InstantiateProps{
     target?: Element;
-    host?: EventTarget; // trans-render/lib/PropertyBag
+    host?: EventTarget;
 }
 
-export interface VirtualProps extends EndUserProps, MinimalProxy<HTMLTemplateElement>{
-    //clonedTemplate: any;
-    //ref: any;
-    //prepResolved: boolean;
-   // isC: boolean;
-}
+export interface VirtualProps extends EndUserProps, MinimalProxy<HTMLTemplateElement>{}
 
 export type Proxy = HTMLTemplateElement & VirtualProps;
 
@@ -46,12 +36,6 @@ export type PPE = [PPP, EventConfigs<PPP, Actions>];
 
 export interface Actions{
     extractIslets(pp: PP, mold: PPP): Promise<PPP | PPE>;
-    // loadScript(pp: PP, script: ExportableScript): Promise<PPE>;
-    // resolveHostProp(pp: PP): PPP;
-    //cloneTemplate(pp: PP): void;//Promise<PP>;
-    //instantiate(pp: PP): Promise<PPP>;
-    //alter(pp: PP): void;
-    
 }
 
 export interface Service{
