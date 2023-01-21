@@ -1,4 +1,4 @@
-# be-indefinite [TODO]
+# be-indefinite [WIP]
 
 *be-indefinite* provides the ability to create a "poor man's web component" (but not a fully fledged web component, just something that resembles a web component).
 
@@ -6,17 +6,19 @@
 
 *be-indefinite* also has something of an antonymous relationship with [*be-definitive*](https://github.com/bahrus/be-definitive).
 
-*be-definitive* provides a way to declaratively define full fledged custom element, complete with support for shadow DOM, constructible stylesheets, form association, etc.  It is meant for scenarios where that custom element can be used in multiple scenarios, across multiple frameworks, server-side or client-side, etc, with a long-term commitment to longevity a significantly desired outcome.
+*be-definitive* provides a way to declaratively define a full fledged custom element, complete with support for shadow DOM, constructible stylesheets, form association, etc.  It is meant for scenarios where that custom element can be used in multiple scenarios, across multiple frameworks, server-side or client-side, etc, with longevity a significantly desired outcome.
 
-*be-indefinite*, in contrast, has more of a [Polly-annish](https://en.wikipedia.org/wiki/Along_Came_Polly) approach to life.  It is meant to be used in a setting where it is only used within an uber web component, and nowhere else, and is still highly in flux.  As such, opportunities for short-cuts are pursued as far as defining the "component", requiring less tender-loving-care to produce.  
+*be-indefinite*, in contrast, has more of a [Polly-annish](https://en.wikipedia.org/wiki/Along_Came_Polly) approach to life.  It is meant to be used in a setting where it is only used within a containing web component, and nowhere else, and is still highly in flux as far as naming / functionality.  As such, opportunities for short-cuts are pursued as far as defining the "component", requiring less tender-loving-care to produce.  
 
 ## Lingo
 
 ```html
-<template id=menu-option be-indefinite='{
-    "observe": ["type", "open", "index"],
-    //"derive": ["hyperlinkCss","transitionDelay", "closed", "labelCss"],
-    "transform": {
+<template id=menu-option be-indefinite>
+    <a target="_blank">
+        <i></i>
+        <h3></h3>
+    </a>
+    <script transform='{
         "a": {
             "href": "url",
             "className": "hyperlinkCss",
@@ -29,13 +31,7 @@
             "textContent": "label",
             "className": "labelCss"
         }
-    }
-}'>
-    <a target="_blank">
-        <i></i>
-        <h3></h3>
-    </a>
-    <script>
+    }'>
         ({type, open, index}) => ({
             hyperlinkCss: `menu-${type}-option`,
             transitionDelay: `${(open ? 200 : 0) + 50*index}ms`,
@@ -47,6 +43,8 @@
 ```
 
 (might be able to infer the derived props from the first eval? or from the transform)
+
+[TODO] Support multiple script tags for fine tuning dependencies
 
 Shorthand for:
 
