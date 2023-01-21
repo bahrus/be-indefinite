@@ -7,18 +7,22 @@ export interface Meta {
 
 export interface EndUserProps{
     transform?: any,
-    hostPrep?: any;
-    target?: Element;
-    targetSelector?: string;
-    host?: EventTarget; // trans-render/lib/PropertyBag
+    islet?: any;
+    //target?: Element;
+    //host?: EventTarget; // trans-render/lib/PropertyBag
     meta?: Meta;
     observe?: string[];
+}
+
+export interface InstantiateProps{
+    target?: Element;
+    host?: EventTarget; // trans-render/lib/PropertyBag
 }
 
 export interface VirtualProps extends EndUserProps, MinimalProxy<HTMLTemplateElement>{
     clonedTemplate: any;
     ref: any;
-    prepResolved: boolean;
+    //prepResolved: boolean;
     isC: boolean;
 }
 
@@ -38,10 +42,14 @@ export interface Actions{
     checkForScript(pp: PP, mold: PPP): Promise<PPP | PPE>;
     loadScript(pp: PP, script: ExportableScript): Promise<PPE>;
     resolveHostProp(pp: PP): PPP;
-    cloneTemplate(pp: PP): void;//Promise<PP>;
+    //cloneTemplate(pp: PP): void;//Promise<PP>;
     //instantiate(pp: PP): Promise<PPP>;
     //alter(pp: PP): void;
     
+}
+
+export interface Service{
+    instantiate(ip: InstantiateProps): Promise<void>
 }
 
 

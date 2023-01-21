@@ -29,7 +29,7 @@
             <h3></h3>
         </a>
         <script>
-            export const hostProp = ({type, open, index}) => ({
+            export const islet = ({type, open, index}) => ({
                 hyperlinkCss: `menu-${type}-option`,
                 transitionDelay: `${(open ? 200 : 0) + 50*index}ms`,
                 closed: !open,
@@ -44,7 +44,7 @@
         {
             "imports": {
                 "xtal-element/": "../node_modules/xtal-element/",
-                "trans-render/": "../node_modules/trans-render/",
+                "trans-render/": "../trans-render/",
                 "be-decorated/": "../node_modules/be-decorated/",
                 "be-exportable/": "../node_modules/be-exportable/",
                 "be-hive/": "../node_modules/be-hive/"
@@ -54,8 +54,22 @@
     <script type=module>
         import '../be-indefinite.js';
         import {PropertyBag} from 'trans-render/lib/PropertyBag.js';
-        const host = new PropertyBag();
+        const pb = new PropertyBag();
+        Object.assign(pb.proxy, {
+            type: 'full',
+            open: true,
+            index: 0,
+            label: 'hello'
+        });
         const menuOption = document.querySelector('#menu-option');
+        menuOption.addEventListener('be-decorated.indefinite.resolved', e => {
+            console.log('iah');
+            const indefinite = menuOption.beDecorated.indefinite;
+            indefinite.controller.instantiate({
+                host: pb.proxy,
+                target
+            });
+        });
         let beD = menuOption.beDecorated;
         if(beD === undefined){
             beD = {};
@@ -66,10 +80,9 @@
             beD.indefinite = {};
         }
         const {indefinite} = beD;
+        const host = pb.proxy;
         Object.assign(indefinite, {
             meta: {},
-            target,
-            host,
             //observe: ['type', 'open', 'index']
         });
         

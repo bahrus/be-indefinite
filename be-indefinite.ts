@@ -1,10 +1,10 @@
 import {define, BeDecoratedProps} from 'be-decorated/DE.js';
-import {Proxy, PP, Actions, VirtualProps, PPP, PPE} from './types';
+import {Proxy, PP, Actions, VirtualProps, PPP, PPE, Service, InstantiateProps} from './types';
 import {register} from 'be-hive/register.js';
 import { ExportableScript } from 'be-exportable/types';
 import { Attachable, Transformer, RenderContext } from 'trans-render/lib/types';
 
-export class BeIndefinite extends EventTarget implements Actions{
+export class BeIndefinite extends EventTarget implements Actions, Service{
     async checkForScript(pp: PP, mold: PPP): Promise<PPP | PPE> {
         const {self, meta, proxy} = pp;
         const {exportableScript} = meta!;
@@ -33,9 +33,9 @@ export class BeIndefinite extends EventTarget implements Actions{
         const {meta, proxy} = pp;
         const {exportableScript} = meta!;
         const {_modExport} = exportableScript;
-        proxy.hostPrep = _modExport.hostPrep;
+        proxy.islet = _modExport.islet;
         return {
-            prepResolved: true
+            resolved: true
         } as PPP;
     }
 
@@ -57,19 +57,20 @@ export class BeIndefinite extends EventTarget implements Actions{
     }
 
     //#transformer: Transformer | undefined;
-    async cloneTemplate(pp: PP){
-        const {host, hostPrep, transform, self, target, observe} = pp;
-        //const {Tx} = await import('trans-render/lib/Tx.js');
+    async instantiate(ip: InstantiateProps){
+        const {host, target} = ip;
+        const pp = (this as any).proxy as PP;
+        const {islet, transform, self, observe} = pp;
         const {DTR} = await import('trans-render/lib/DTR.js');
         const {getAdjacentChildren} = await import('trans-render/lib/getAdjacentChildren.js');
         const ctx: RenderContext = {
             host,
-            transform,
+            match: transform,
         };
         const transformer = new DTR(ctx);
         const clone = self.content.cloneNode(true) as DocumentFragment;
-        if(hostPrep !== undefined){
-            hostPrep(host);
+        if(islet !== undefined){
+            Object.assign(host!, islet(host));
         }
         await transformer.transform(clone);
         const cnt = clone.childNodes.length;
@@ -79,13 +80,16 @@ export class BeIndefinite extends EventTarget implements Actions{
             const {insertAdjacentClone} = await import('trans-render/lib/insertAdjacentClone.js');
             insertAdjacentClone(clone, target!, 'afterend');
         }
-        const refTempl = document.createElement('template');
+        const refTempl = document.createElement('template') as any;
         refTempl.dataset.cnt = cnt + '';
-        
+        refTempl.beDecorated = {
+            //scope: host
+        };
+        target!.insertAdjacentElement('afterend', refTempl);
         host!.addEventListener('prop-changed', e => {
             const prop = (e as CustomEvent).detail.prop;
             if(observe!.includes(prop)){
-                hostPrep(host);
+                islet(host);
                 ctx.host = host;
                 const children = getAdjacentChildren(refTempl);
                 transformer.transform(children);
@@ -110,8 +114,8 @@ define<Proxy & BeDecoratedProps<Proxy, Actions>, Actions>({
             forceVisible: [upgrade],
             upgrade,
             virtualProps: [
-                'transform', 'hostPrep', 'target',  'host', 'meta',
-                'isC', 'clonedTemplate', 'ref', 'prepResolved', 'observe'
+                'transform', 'islet', 'meta',
+                'isC', 'observe'
             ],
             proxyPropDefaults: {
                 isC: true
@@ -128,14 +132,14 @@ define<Proxy & BeDecoratedProps<Proxy, Actions>, Actions>({
                 ifAllOf: ['host', 'prepResolved', 'transform'],
                 ifNoneOf: ['ref']
             },
-            instantiate: {
-                ifAllOf: ['clonedTemplate', 'target'],
-                ifNoneOf: ['ref']
-            },
-            alter: {
-                ifAllOf: ['ref'],
-                ifKeyIn: ['host']
-            }
+            // instantiate: {
+            //     ifAllOf: ['clonedTemplate', 'target'],
+            //     ifNoneOf: ['ref']
+            // },
+            // alter: {
+            //     ifAllOf: ['ref'],
+            //     ifKeyIn: ['host']
+            // }
         }
     },
     complexPropDefaults: {

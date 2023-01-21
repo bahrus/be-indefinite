@@ -27,9 +27,9 @@ export class BeIndefinite extends EventTarget {
         const { meta, proxy } = pp;
         const { exportableScript } = meta;
         const { _modExport } = exportableScript;
-        proxy.hostPrep = _modExport.hostPrep;
+        proxy.islet = _modExport.islet;
         return {
-            prepResolved: true
+            resolved: true
         };
     }
     async loadScript(pp, script) {
@@ -50,19 +50,20 @@ export class BeIndefinite extends EventTarget {
             }];
     }
     //#transformer: Transformer | undefined;
-    async cloneTemplate(pp) {
-        const { host, hostPrep, transform, self, target, observe } = pp;
-        //const {Tx} = await import('trans-render/lib/Tx.js');
+    async instantiate(ip) {
+        const { host, target } = ip;
+        const pp = this.proxy;
+        const { islet, transform, self, observe } = pp;
         const { DTR } = await import('trans-render/lib/DTR.js');
         const { getAdjacentChildren } = await import('trans-render/lib/getAdjacentChildren.js');
         const ctx = {
             host,
-            transform,
+            match: transform,
         };
         const transformer = new DTR(ctx);
         const clone = self.content.cloneNode(true);
-        if (hostPrep !== undefined) {
-            hostPrep(host);
+        if (islet !== undefined) {
+            Object.assign(host, islet(host));
         }
         await transformer.transform(clone);
         const cnt = clone.childNodes.length;
@@ -75,10 +76,14 @@ export class BeIndefinite extends EventTarget {
         }
         const refTempl = document.createElement('template');
         refTempl.dataset.cnt = cnt + '';
+        refTempl.beDecorated = {
+        //scope: host
+        };
+        target.insertAdjacentElement('afterend', refTempl);
         host.addEventListener('prop-changed', e => {
             const prop = e.detail.prop;
             if (observe.includes(prop)) {
-                hostPrep(host);
+                islet(host);
                 ctx.host = host;
                 const children = getAdjacentChildren(refTempl);
                 transformer.transform(children);
@@ -97,8 +102,8 @@ define({
             forceVisible: [upgrade],
             upgrade,
             virtualProps: [
-                'transform', 'hostPrep', 'target', 'host', 'meta',
-                'isC', 'clonedTemplate', 'ref', 'prepResolved', 'observe'
+                'transform', 'islet', 'meta',
+                'isC', 'observe'
             ],
             proxyPropDefaults: {
                 isC: true
@@ -115,14 +120,14 @@ define({
                 ifAllOf: ['host', 'prepResolved', 'transform'],
                 ifNoneOf: ['ref']
             },
-            instantiate: {
-                ifAllOf: ['clonedTemplate', 'target'],
-                ifNoneOf: ['ref']
-            },
-            alter: {
-                ifAllOf: ['ref'],
-                ifKeyIn: ['host']
-            }
+            // instantiate: {
+            //     ifAllOf: ['clonedTemplate', 'target'],
+            //     ifNoneOf: ['ref']
+            // },
+            // alter: {
+            //     ifAllOf: ['ref'],
+            //     ifKeyIn: ['host']
+            // }
         }
     },
     complexPropDefaults: {
