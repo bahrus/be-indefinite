@@ -1,8 +1,8 @@
 import {define, BeDecoratedProps} from 'be-decorated/DE.js';
-import {Proxy, PP, Actions, VirtualProps, PPP, PPE, Service, InstantiateProps, TransformIslet} from './types';
+import {Proxy, PP, Actions, VirtualProps, PPP, PPE, Service, InstantiateProps} from './types';
 import {register} from 'be-hive/register.js';
 import { ExportableScript } from 'be-exportable/types';
-import { Attachable, Transformer, RenderContext } from 'trans-render/lib/types';
+import { Attachable, Transformer, RenderContext, TransformIslet } from 'trans-render/lib/types';
 
 export class BeIndefinite extends EventTarget implements Actions, Service{
     async extractIslets(pp: PP, mold: PPP): Promise<PPP | PPE> {
@@ -49,49 +49,68 @@ export class BeIndefinite extends EventTarget implements Actions, Service{
 
     //#transformer: Transformer | undefined;
     async instantiate(ip: InstantiateProps){
+        import('be-free-ranged/be-free-ranged.js');
+        const bfr = 'be-free-ranged';
+        await customElements.whenDefined(bfr);
+        const bfrInstance = document.createElement(bfr) as any as Attachable;
+        const refTempl = document.createElement('template') as any;
         const {host, target} = ip;
+        target!.insertAdjacentElement('afterend', refTempl);
         const pp = (this as any).proxy as PP;
-        const {meta, self} = pp;
-        const {DTR} = await import('trans-render/lib/DTR.js');
-        const {getAdjacentChildren} = await import('trans-render/lib/getAdjacentChildren.js');
+        const {meta} = pp;
         const {transformIslets} = meta!;
-        for(const transformIslet of transformIslets){
-            const {transform, islet} = transformIslet;
-            const ctx: RenderContext = {
+        refTempl.beDecorated = {
+            freeRanged: {
+                transformIslets,
                 host,
-                match: transform,
-            };
-            const transformer = new DTR(ctx);
-            const clone = self.content.cloneNode(true) as DocumentFragment;
-            if(islet !== undefined){
-                Object.assign(host!, islet(host));
+                template: (this as any).proxy.self
             }
-            await transformer.transform(clone);
-            const cnt = clone.childNodes.length;
-            if(target!.nextElementSibling === null && target!.parentElement !== null){
-                target!.parentElement.appendChild(clone);
-            }else{
-                const {insertAdjacentClone} = await import('trans-render/lib/insertAdjacentClone.js');
-                insertAdjacentClone(clone, target!, 'afterend');
-            }
-            const refTempl = document.createElement('template') as any;
-            refTempl.dataset.cnt = cnt + '';
-            refTempl.beDecorated = {
-                //scope: host
-            };
-            target!.insertAdjacentElement('afterend', refTempl);
-            // host!.addEventListener('prop-changed', e => {
-            //     const prop = (e as CustomEvent).detail.prop;
-            //     if(observe!.includes(prop)){
-            //         islet(host);
-            //         ctx.host = host;
-            //         const children = getAdjacentChildren(refTempl);
-            //         transformer.transform(children);
-            //     }
-                
-                
-            // });
         }
+        bfrInstance.attach(refTempl)
+
+        // const {host, target} = ip;
+        // const pp = (this as any).proxy as PP;
+        // const {meta, self} = pp;
+        // const {DTR} = await import('trans-render/lib/DTR.js');
+        // const {getAdjacentChildren} = await import('trans-render/lib/getAdjacentChildren.js');
+        // const {transformIslets} = meta!;
+        // for(const transformIslet of transformIslets){
+        //     const {transform, islet} = transformIslet;
+        //     const ctx: RenderContext = {
+        //         host,
+        //         match: transform,
+        //     };
+        //     const transformer = new DTR(ctx);
+        //     const clone = self.content.cloneNode(true) as DocumentFragment;
+        //     if(islet !== undefined){
+        //         Object.assign(host!, islet(host));
+        //     }
+        //     await transformer.transform(clone);
+        //     const cnt = clone.childNodes.length;
+        //     if(target!.nextElementSibling === null && target!.parentElement !== null){
+        //         target!.parentElement.appendChild(clone);
+        //     }else{
+        //         const {insertAdjacentClone} = await import('trans-render/lib/insertAdjacentClone.js');
+        //         insertAdjacentClone(clone, target!, 'afterend');
+        //     }
+        //     const refTempl = document.createElement('template') as any;
+        //     refTempl.dataset.cnt = cnt + '';
+        //     refTempl.beDecorated = {
+        //         //scope: host
+        //     };
+        //     target!.insertAdjacentElement('afterend', refTempl);
+        //     // host!.addEventListener('prop-changed', e => {
+        //     //     const prop = (e as CustomEvent).detail.prop;
+        //     //     if(observe!.includes(prop)){
+        //     //         islet(host);
+        //     //         ctx.host = host;
+        //     //         const children = getAdjacentChildren(refTempl);
+        //     //         transformer.transform(children);
+        //     //     }
+                
+                
+        //     // });
+        // }
 
 
 

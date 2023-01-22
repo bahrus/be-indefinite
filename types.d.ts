@@ -1,10 +1,11 @@
 import {BeDecoratedProps, MinimalProxy, EventConfigs} from 'be-decorated/types';
 import {ExportableScript} from 'be-exportable/types';
+import {TransformIslet} from 'trans-render/lib/types';
 
-export interface TransformIslet {
-    transform: any,
-    islet: (inp: any) => any,
-}
+// export interface TransformIslet {
+//     transform: any,
+//     islet: (inp: any) => any,
+// }
 
 export interface Meta {
     exportableScripts: ExportableScript[];
