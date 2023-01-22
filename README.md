@@ -42,15 +42,11 @@
 </template>
 ```
 
-(might be able to infer the derived props from the first eval? or from the transform)
-
-[TODO] Support multiple script tags for fine tuning dependencies
-
 Shorthand for:
 
 ```html
 <script nomodule>
-    export const via = ({type, open, index}) => ({
+    export const islet = ({type, open, index}) => ({
         hyperlinkCss: `menu-${type}-option`,
         transitionDelay: `${(open ? 200 : 0) + 50*index}ms`,
         closed: !open,
