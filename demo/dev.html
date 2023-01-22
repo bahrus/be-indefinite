@@ -26,7 +26,7 @@
                 "className": "labelCss"
             }
         }'>
-            export const islet = ({type, open, index}) => ({
+            ({type, open, index}) => ({
                 hyperlinkCss: `menu-${type}-option`,
                 transitionDelay: `${(open ? 200 : 0) + 50*index}ms`,
                 closed: !open,
@@ -41,10 +41,10 @@
         {
             "imports": {
                 "xtal-element/": "../node_modules/xtal-element/",
-                "trans-render/": "../trans-render/",
+                "trans-render/": "../node_modules/trans-render/",
                 "be-decorated/": "../node_modules/be-decorated/",
                 "be-exportable/": "../node_modules/be-exportable/",
-                "be-free-ranged/": "../be-free-ranged/",
+                "be-free-ranged/": "../node_modules/be-free-ranged/",
                 "be-hive/": "../node_modules/be-hive/"
             }
         }
@@ -61,7 +61,6 @@
         });
         const menuOption = document.querySelector('#menu-option');
         menuOption.addEventListener('be-decorated.indefinite.resolved', e => {
-            console.log('iah');
             const indefinite = menuOption.beDecorated.indefinite;
             indefinite.controller.instantiate({
                 host: pb.proxy,

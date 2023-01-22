@@ -9,6 +9,9 @@ export class BeIndefinite extends EventTarget {
         const { exportableScripts, transformIslets } = meta;
         for (const script of scripts) {
             const clonedScript = script.cloneNode(true);
+            if (clonedScript.innerHTML.trim().startsWith('({')) {
+                clonedScript.innerHTML = clonedScript.innerHTML.replace('({', 'export const islet = ({');
+            }
             exportableScripts.push(clonedScript);
             transformIslets.push(await this.loadIslet(clonedScript));
             script.remove();

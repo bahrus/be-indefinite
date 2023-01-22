@@ -13,6 +13,9 @@ export class BeIndefinite extends EventTarget implements Actions, Service{
         const {exportableScripts, transformIslets} = meta!;
         for(const script of scripts){
             const clonedScript  = script.cloneNode(true) as ExportableScript;
+            if(clonedScript.innerHTML.trim().startsWith('({')){
+                clonedScript.innerHTML = clonedScript.innerHTML.replace('({', 'export const islet = ({');
+            }
             exportableScripts.push(clonedScript);
             transformIslets.push(await this.loadIslet(clonedScript));
             script.remove();
