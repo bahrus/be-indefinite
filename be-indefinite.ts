@@ -1,8 +1,8 @@
 import {define, BeDecoratedProps} from 'be-decorated/DE.js';
-import {Proxy, PP, Actions, VirtualProps, PPP, PPE, Service, InstantiateProps} from './types';
+import {Proxy, PP, Actions, PPP, PPE, Service, InstantiateProps} from './types';
 import {register} from 'be-hive/register.js';
 import { ExportableScript } from 'be-exportable/types';
-import { Attachable, Transformer, RenderContext, TransformIslet } from 'trans-render/lib/types';
+import { Attachable, TransformIslet } from 'trans-render/lib/types';
 
 export class BeIndefinite extends EventTarget implements Actions, Service{
     async extractIslets(pp: PP, mold: PPP): Promise<PPP | PPE> {
@@ -58,9 +58,9 @@ export class BeIndefinite extends EventTarget implements Actions, Service{
         const bfrInstance = document.createElement(bfr) as any as Attachable;
         const refTempl = document.createElement('template') as any;
         const {host, target} = ip;
-        target!.insertAdjacentElement('afterend', refTempl);
         const pp = (this as any).proxy as PP;
-        const {meta} = pp;
+        const {meta, insertPosition} = pp;
+        target!.insertAdjacentElement(insertPosition!, refTempl);
         const {transformIslets} = meta!;
         refTempl.beDecorated = {
             freeRanged: {
@@ -90,9 +90,10 @@ define<Proxy & BeDecoratedProps<Proxy, Actions>, Actions>({
             forceVisible: [upgrade],
             upgrade,
             virtualProps: [
-                'meta'
+                'meta', 'insertPosition'
             ],
             proxyPropDefaults: {
+                insertPosition: 'afterend',
             }
         },
         actions:{

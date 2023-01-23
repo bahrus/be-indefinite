@@ -48,9 +48,9 @@ export class BeIndefinite extends EventTarget {
         const bfrInstance = document.createElement(bfr);
         const refTempl = document.createElement('template');
         const { host, target } = ip;
-        target.insertAdjacentElement('afterend', refTempl);
         const pp = this.proxy;
-        const { meta } = pp;
+        const { meta, insertPosition } = pp;
+        target.insertAdjacentElement(insertPosition, refTempl);
         const { transformIslets } = meta;
         refTempl.beDecorated = {
             freeRanged: {
@@ -73,9 +73,11 @@ define({
             forceVisible: [upgrade],
             upgrade,
             virtualProps: [
-                'meta'
+                'meta', 'insertPosition'
             ],
-            proxyPropDefaults: {}
+            proxyPropDefaults: {
+                insertPosition: 'afterend',
+            }
         },
         actions: {
             extractIslets: {

@@ -14,6 +14,7 @@ export interface Meta {
 
 export interface EndUserProps{
     meta?: Meta;
+    insertPosition?: InsertPosition;
 }
 
 export interface InstantiateProps{
