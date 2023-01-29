@@ -1,6 +1,6 @@
 # be-indefinite [WIP]
 
-*be-indefinite* provides the ability to create a "poor man's web component".  It *can* be turned into a web component by external users, but it doesn't make sense in some cases to do so. 
+*be-indefinite* provides the ability to create a "poor man's web component".  It *can* be turned into a web component by external consumer, but it doesn't make sense in some cases to do so. 
 
 <!--*be-indefinite* is one of the two element decorators that form a tight bond -- the two i's -- *be-indefinite* and [*be-inquiring*](https://github.com/bahrus/be-inquiring).-->
 
