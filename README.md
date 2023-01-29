@@ -1,14 +1,14 @@
 # be-indefinite [WIP]
 
-*be-indefinite* provides the ability to create a "poor man's web component" (but not a fully fledged web component, just something that resembles a web component).
+*be-indefinite* provides the ability to create a "poor man's web component".  It *can* be turned into a web component by external users, but it doesn't make sense in some cases to do so. 
 
-*be-indefinite* is one of the two element decorators that form a tight bond -- the two i's -- *be-indefinite* and [*be-inquiring*](https://github.com/bahrus/be-inquiring).
+<!--*be-indefinite* is one of the two element decorators that form a tight bond -- the two i's -- *be-indefinite* and [*be-inquiring*](https://github.com/bahrus/be-inquiring).-->
 
-*be-indefinite* also has something of an antonymous relationship with [*be-definitive*](https://github.com/bahrus/be-definitive).
+*be-indefinite* has something of an antonymous relationship with [*be-definitive*](https://github.com/bahrus/be-definitive).
 
 *be-definitive* provides a way to declaratively define a full fledged custom element, complete with support for shadow DOM, constructible stylesheets, form association, etc.  It is meant for scenarios where that custom element can be used in multiple scenarios, across multiple frameworks, server-side or client-side, etc, with longevity a significantly desired outcome.
 
-*be-indefinite*, in contrast, has more of a [Polly-annish](https://en.wikipedia.org/wiki/Along_Came_Polly) approach to life.  It is meant to be used in a setting where it is only used within a containing web component, and nowhere else, and is still highly in flux as far as naming / functionality.  As such, opportunities for short-cuts are pursued as far as defining the "component", requiring less tender-loving-care to produce.  
+*be-indefinite*, in contrast, has more of a [Polly-annish](https://en.wikipedia.org/wiki/Along_Came_Polly) approach to life.  It is meant to be used in a setting where it is only used within a containing web component, and nowhere else, and is still highly in flux as far as naming / functionality.  As such, opportunities for short-cuts are pursued as far as defining the "component", requiring less tender-loving-care to produce.  It might make much more sense to make *be-indefinite* adorned elements into web components once [scoped custom elements](https://chromestatus.com/feature/5090435261792256) is a thing.  But even then, there may be scenarios where we really don't want to devote a nesting tag in the final output to define some custom-element like behavior (for example, within a table or ul/li markup), or utility tag services like for-each. 
 
 ## Lingo
 
