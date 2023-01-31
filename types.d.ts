@@ -8,13 +8,14 @@ import {TransformIslet} from 'trans-render/lib/types';
 // }
 
 export interface Meta {
-    exportableScripts: ExportableScript[];
-    transformIslets: TransformIslet[];
+    exportableScripts?: ExportableScript[];
+    transformIslets?: TransformIslet[];
 }
 
 export interface EndUserProps{
     meta?: Meta;
-    insertPosition?: InsertPosition;
+    //insertPosition?: InsertPosition;
+    placement: 'fillTarget' | 'appendAdjacent'
 }
 
 export interface InstantiateProps{
@@ -40,9 +41,9 @@ export interface Actions{
     extractIslets(pp: PP, mold: PPP): Promise<PPP | PPE>;
 }
 
-export interface Service{
-    instantiate(ip: InstantiateProps): Promise<void>
-}
+// export interface Service{
+//     instantiate(ip: InstantiateProps): Promise<void>
+// }
 
 
 

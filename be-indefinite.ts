@@ -26,7 +26,7 @@ export class BeIndefinite extends EventTarget implements Actions, Service{
 
     loadIslet(script: ExportableScript): Promise<TransformIslet>{
         return new Promise(async resolve => {
-            const be = 'be-exportable';
+            const {doBeHavings} = await import('trans-render/lib/doBeHavings.js');
             script.addEventListener('load', e => {
                 const transformIslet: TransformIslet = {
                     islet: script._modExport.islet,
@@ -34,48 +34,44 @@ export class BeIndefinite extends EventTarget implements Actions, Service{
                 };
                 resolve(transformIslet);
             }, {once: true});
-            if(customElements.get(be) === undefined){
-                import('be-exportable/be-exportable.js');
-                await customElements.whenDefined(be);
-                const decorator = document.createElement(be) as any as Attachable;
-                await decorator.attach(script);   
-                   
-            }else{
-                const decorator = document.createElement(be) as any as Attachable;
-                await decorator.attach(script);
-            }
+            await doBeHavings(script, [{
+                be: 'exportable'
+            }]);
         });
 
     }
 
 
 
-    //#transformer: Transformer | undefined;
-    async instantiate(ip: InstantiateProps){
-        import('be-free-ranged/be-free-ranged.js');
-        const bfr = 'be-free-ranged';
-        await customElements.whenDefined(bfr);
-        const bfrInstance = document.createElement(bfr) as any as Attachable;
-        const refTempl = document.createElement('template') as any;
-        const {host, target} = ip;
-        const pp = (this as any).proxy as PP;
-        const {meta, insertPosition} = pp;
-        target!.insertAdjacentElement(insertPosition!, refTempl);
-        const {transformIslets} = meta!;
-        refTempl.beDecorated = {
-            freeRanged: {
-                transformIslets,
-                host,
-                template: (this as any).proxy.self
-            }
-        }
-        bfrInstance.attach(refTempl)
-
-    
-
-
-
-    }
+    // //#transformer: Transformer | undefined;
+    // async instantiate(ip: InstantiateProps){
+    //     const pp = (this as any).proxy as PP;
+    //     const {meta, placement} = pp;
+    //     const {host, target} = ip;
+    //     switch(placement){
+    //         case 'appendAdjacent':{
+    //             import('be-free-ranged/be-free-ranged.js');
+    //             const bfr = 'be-free-ranged';
+    //             await customElements.whenDefined(bfr);
+    //             const bfrInstance = document.createElement(bfr) as any as Attachable;
+    //             const refTempl = document.createElement('template') as any;
+                
+    //             target!.insertAdjacentElement('afterend', refTempl);
+    //             const {transformIslets} = meta!;
+    //             refTempl.beDecorated = {
+    //                 freeRanged: {
+    //                     transformIslets,
+    //                     host,
+    //                     template: (this as any).proxy.self
+    //                 }
+    //             }
+    //             bfrInstance.attach(refTempl);
+    //             break;
+    //         }
+    //         case 'fillTarget':
+    //             const {}
+    //     }
+    // }
 }
 
 const tagName = 'be-indefinite';
@@ -90,10 +86,10 @@ define<Proxy & BeDecoratedProps<Proxy, Actions>, Actions>({
             forceVisible: [upgrade],
             upgrade,
             virtualProps: [
-                'meta', 'insertPosition'
+                'meta', 'placement'
             ],
             proxyPropDefaults: {
-                insertPosition: 'afterend',
+                placement: 'appendAdjacent',
             }
         },
         actions:{

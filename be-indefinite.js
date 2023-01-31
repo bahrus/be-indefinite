@@ -20,7 +20,7 @@ export class BeIndefinite extends EventTarget {
     }
     loadIslet(script) {
         return new Promise(async (resolve) => {
-            const be = 'be-exportable';
+            const { doBeHavings } = await import('trans-render/lib/doBeHavings.js');
             script.addEventListener('load', e => {
                 const transformIslet = {
                     islet: script._modExport.islet,
@@ -28,38 +28,10 @@ export class BeIndefinite extends EventTarget {
                 };
                 resolve(transformIslet);
             }, { once: true });
-            if (customElements.get(be) === undefined) {
-                import('be-exportable/be-exportable.js');
-                await customElements.whenDefined(be);
-                const decorator = document.createElement(be);
-                await decorator.attach(script);
-            }
-            else {
-                const decorator = document.createElement(be);
-                await decorator.attach(script);
-            }
+            await doBeHavings(script, [{
+                    be: 'exportable'
+                }]);
         });
-    }
-    //#transformer: Transformer | undefined;
-    async instantiate(ip) {
-        import('be-free-ranged/be-free-ranged.js');
-        const bfr = 'be-free-ranged';
-        await customElements.whenDefined(bfr);
-        const bfrInstance = document.createElement(bfr);
-        const refTempl = document.createElement('template');
-        const { host, target } = ip;
-        const pp = this.proxy;
-        const { meta, insertPosition } = pp;
-        target.insertAdjacentElement(insertPosition, refTempl);
-        const { transformIslets } = meta;
-        refTempl.beDecorated = {
-            freeRanged: {
-                transformIslets,
-                host,
-                template: this.proxy.self
-            }
-        };
-        bfrInstance.attach(refTempl);
     }
 }
 const tagName = 'be-indefinite';
@@ -73,10 +45,10 @@ define({
             forceVisible: [upgrade],
             upgrade,
             virtualProps: [
-                'meta', 'insertPosition'
+                'meta', 'placement'
             ],
             proxyPropDefaults: {
-                insertPosition: 'afterend',
+                placement: 'appendAdjacent',
             }
         },
         actions: {
