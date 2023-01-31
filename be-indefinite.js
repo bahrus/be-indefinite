@@ -22,10 +22,8 @@ export class BeIndefinite extends EventTarget {
         return new Promise(async (resolve) => {
             const { doBeHavings } = await import('trans-render/lib/doBeHavings.js');
             script.addEventListener('load', e => {
-                const transformIslet = {
-                    islet: script._modExport.islet,
-                    transform: JSON.parse(script.getAttribute('transform')),
-                };
+                const transformIslet = (script.dataset.settings ? JSON.parse(script.dataset.settings) : {});
+                transformIslet.islet = script._modExport.islet;
                 resolve(transformIslet);
             }, { once: true });
             await doBeHavings(script, [{
@@ -45,10 +43,10 @@ define({
             forceVisible: [upgrade],
             upgrade,
             virtualProps: [
-                'meta', 'placement'
+                'meta',
             ],
             proxyPropDefaults: {
-                placement: 'appendAdjacent',
+            //placement: 'appendAdjacent',
             }
         },
         actions: {

@@ -1,10 +1,10 @@
 import {define, BeDecoratedProps} from 'be-decorated/DE.js';
-import {Proxy, PP, Actions, PPP, PPE, Service, InstantiateProps} from './types';
+import {Proxy, PP, Actions, PPP, PPE, InstantiateProps} from './types';
 import {register} from 'be-hive/register.js';
 import { ExportableScript } from 'be-exportable/types';
 import { Attachable, TransformIslet } from 'trans-render/lib/types';
 
-export class BeIndefinite extends EventTarget implements Actions, Service{
+export class BeIndefinite extends EventTarget implements Actions{
     async extractIslets(pp: PP, mold: PPP): Promise<PPP | PPE> {
         const {self, meta, proxy} = pp;
         const scripts = Array.from(self.content.querySelectorAll('script'));
@@ -16,8 +16,8 @@ export class BeIndefinite extends EventTarget implements Actions, Service{
             if(clonedScript.innerHTML.trim().startsWith('({')){
                 clonedScript.innerHTML = clonedScript.innerHTML.replace('({', 'export const islet = ({');
             }
-            exportableScripts.push(clonedScript);
-            transformIslets.push(await this.loadIslet(clonedScript));
+            exportableScripts!.push(clonedScript);
+            transformIslets!.push(await this.loadIslet(clonedScript));
             script.remove();
         }
         return mold;
@@ -28,10 +28,8 @@ export class BeIndefinite extends EventTarget implements Actions, Service{
         return new Promise(async resolve => {
             const {doBeHavings} = await import('trans-render/lib/doBeHavings.js');
             script.addEventListener('load', e => {
-                const transformIslet: TransformIslet = {
-                    islet: script._modExport.islet,
-                    transform: JSON.parse(script.getAttribute('transform')!),
-                };
+                const transformIslet = (script.dataset.settings ? JSON.parse(script.dataset.settings!) : {}) as TransformIslet;
+                transformIslet.islet = script._modExport.islet;
                 resolve(transformIslet);
             }, {once: true});
             await doBeHavings(script, [{
@@ -86,10 +84,10 @@ define<Proxy & BeDecoratedProps<Proxy, Actions>, Actions>({
             forceVisible: [upgrade],
             upgrade,
             virtualProps: [
-                'meta', 'placement'
+                'meta', 
             ],
             proxyPropDefaults: {
-                placement: 'appendAdjacent',
+                //placement: 'appendAdjacent',
             }
         },
         actions:{

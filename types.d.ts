@@ -15,7 +15,7 @@ export interface Meta {
 export interface EndUserProps{
     meta?: Meta;
     //insertPosition?: InsertPosition;
-    placement: 'fillTarget' | 'appendAdjacent'
+    //placement: 'fillTarget' | 'appendAdjacent'
 }
 
 export interface InstantiateProps{

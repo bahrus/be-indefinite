@@ -20,19 +20,22 @@ But even then, there may be scenarios where we really don't want to devote a nes
         <i></i>
         <h3></h3>
     </a>
-    <script transform='{
-        "a": {
-            "href": "url",
-            "className": "hyperlinkCss",
-            ".style.transitionDelay": "transitionDelay"
+    <script data-settings='{
+        "transform": {
+            "a": {
+                "href": "url",
+                "className": "hyperlinkCss",
+                ".style.transitionDelay": "transitionDelay"
+            },
+            "i":{
+                "className": "icon"
+            },
+            "h3": {
+                "textContent": "label",
+                "className": "labelCss"
+            }
         },
-        "i":{
-            "className": "icon"
-        },
-        "h3": {
-            "textContent": "label",
-            "className": "labelCss"
-        }
+        "hostTarget": "."
     }'>
         ({type, open, index}) => ({
             hyperlinkCss: `menu-${type}-option`,
