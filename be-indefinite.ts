@@ -88,6 +88,7 @@ define<Proxy & BeDecoratedProps<Proxy, Actions>, Actions>({
             ],
             proxyPropDefaults: {
                 //placement: 'appendAdjacent',
+                meta: {}
             }
         },
         actions:{

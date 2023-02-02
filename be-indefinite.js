@@ -46,7 +46,8 @@ define({
                 'meta',
             ],
             proxyPropDefaults: {
-            //placement: 'appendAdjacent',
+                //placement: 'appendAdjacent',
+                meta: {}
             }
         },
         actions: {
