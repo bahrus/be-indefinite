@@ -22,7 +22,6 @@ export class BeIndefinite extends EventTarget implements Actions{
             transformIslets!.push(await this.loadIslet(clonedScript));
             script.remove();
         }
-        console.log({self, meta});
         return {
             meta,
             resolved: true,
