@@ -1,11 +1,13 @@
 import { define } from 'be-decorated/DE.js';
 import { register } from 'be-hive/register.js';
 export class BeIndefinite extends EventTarget {
-    async extractIslets(pp, mold) {
-        const { self, meta, proxy } = pp;
+    async extractIslets(pp) {
+        const { self, proxy } = pp;
         const scripts = Array.from(self.content.querySelectorAll('script'));
-        meta.exportableScripts = [];
-        meta.transformIslets = [];
+        const meta = {
+            exportableScripts: [],
+            transformIslets: [],
+        };
         const { exportableScripts, transformIslets } = meta;
         for (const script of scripts) {
             const clonedScript = script.cloneNode(true);
@@ -16,7 +18,11 @@ export class BeIndefinite extends EventTarget {
             transformIslets.push(await this.loadIslet(clonedScript));
             script.remove();
         }
-        return mold;
+        console.log({ self, meta });
+        return {
+            meta,
+            resolved: true,
+        };
     }
     loadIslet(script) {
         return new Promise(async (resolve) => {
@@ -46,17 +52,11 @@ define({
                 'meta',
             ],
             proxyPropDefaults: {
-                //placement: 'appendAdjacent',
-                meta: {}
+                isC: true,
             }
         },
         actions: {
-            extractIslets: {
-                ifAllOf: ['meta'],
-                returnObjMold: {
-                    resolved: true
-                }
-            },
+            extractIslets: 'isC',
         }
     },
     complexPropDefaults: {

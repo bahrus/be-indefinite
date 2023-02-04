@@ -12,18 +12,13 @@ export interface Meta {
     transformIslets?: TransformIslet[];
 }
 
-export interface EndUserProps{
+export interface EndUserProps{}
+
+
+export interface VirtualProps extends EndUserProps, MinimalProxy<HTMLTemplateElement>{
     meta?: Meta;
-    //insertPosition?: InsertPosition;
-    //placement: 'fillTarget' | 'appendAdjacent'
+    isC?:  boolean;
 }
-
-export interface InstantiateProps{
-    target?: Element;
-    host?: EventTarget;
-}
-
-export interface VirtualProps extends EndUserProps, MinimalProxy<HTMLTemplateElement>{}
 
 export type Proxy = HTMLTemplateElement & VirtualProps;
 
@@ -38,12 +33,9 @@ export type PPP = Partial<PP>;
 export type PPE = [PPP, EventConfigs<PPP, Actions>];
 
 export interface Actions{
-    extractIslets(pp: PP, mold: PPP): Promise<PPP | PPE>;
+    extractIslets(pp: PP): Promise<PPP>;
 }
 
-// export interface Service{
-//     instantiate(ip: InstantiateProps): Promise<void>
-// }
 
 
 
